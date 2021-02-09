@@ -7,6 +7,7 @@
 #include "Components/CapsuleComponent.h"
 #include "Components/InputComponent.h"
 #include "GameFramework/InputSettings.h"
+#include "GameFramework/CharacterMovementComponent.h"
 #include "HeadMountedDisplayFunctionLibrary.h"
 #include "Kismet/GameplayStatics.h"
 #include "MotionControllerComponent.h"
@@ -82,6 +83,9 @@ AProjetVR2ACharacter::AProjetVR2ACharacter()
 
 	// Uncomment the following line to turn motion controllers on by default:
 	//bUsingMotionControllers = true;
+
+	// Define speed var
+	SprintSpeedMultiplier = 2.0f;
 }
 
 void AProjetVR2ACharacter::BeginPlay()
@@ -119,6 +123,10 @@ void AProjetVR2ACharacter::SetupPlayerInputComponent(class UInputComponent* Play
 
 	// Bind fire event
 	PlayerInputComponent->BindAction("Fire", IE_Pressed, this, &AProjetVR2ACharacter::OnFire);
+
+	// Bind Sprint Event
+	PlayerInputComponent->BindAction("Sprint", IE_Pressed, this, &AProjetVR2ACharacter::StartSprint);
+	PlayerInputComponent->BindAction("Sprint", IE_Released, this, &AProjetVR2ACharacter::StopSprint);
 
 	// Enable touchscreen input
 	EnableTouchscreenMovement(PlayerInputComponent);
@@ -297,4 +305,14 @@ bool AProjetVR2ACharacter::EnableTouchscreenMovement(class UInputComponent* Play
 	}
 	
 	return false;
+}
+
+void AProjetVR2ACharacter::StartSprint() 
+{
+	GetCharacterMovement()->MaxWalkSpeed *= SprintSpeedMultiplier;
+}
+
+void AProjetVR2ACharacter::StopSprint() 
+{
+	GetCharacterMovement()->MaxWalkSpeed /= SprintSpeedMultiplier;
 }

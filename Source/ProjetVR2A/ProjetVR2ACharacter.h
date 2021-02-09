@@ -86,6 +86,9 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Gameplay)
 	uint8 bUsingMotionControllers : 1;
 
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category="Character Movement: Walking")
+	float SprintSpeedMultiplier;
+
 protected:
 	
 	/** Fires a projectile. */
@@ -124,6 +127,9 @@ protected:
 	void EndTouch(const ETouchIndex::Type FingerIndex, const FVector Location);
 	void TouchUpdate(const ETouchIndex::Type FingerIndex, const FVector Location);
 	TouchData	TouchItem;
+
+	void StartSprint();
+	void StopSprint();
 	
 protected:
 	// APawn interface
