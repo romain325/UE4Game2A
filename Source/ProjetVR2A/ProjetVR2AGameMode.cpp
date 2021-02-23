@@ -1,8 +1,8 @@
 // Copyright Epic Games, Inc. All Rights Reserved.
 
 #include "ProjetVR2AGameMode.h"
-#include "ProjetVR2AHUD.h"
-#include "ProjetVR2ACharacter.h"
+#include "ProjetVR2A/HUD/ProjetVR2AHUD.h"
+#include "ProjetVR2A/Character/ProjetVR2ACharacter.h"
 #include "UObject/ConstructorHelpers.h"
 
 AProjetVR2AGameMode::AProjetVR2AGameMode()
