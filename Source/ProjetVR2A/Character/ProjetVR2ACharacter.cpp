@@ -12,7 +12,9 @@
 #include "Kismet/GameplayStatics.h"
 #include "MotionControllerComponent.h"
 #include "XRMotionControllerBase.h" // for FXRMotionControllerBase::RightHandSourceId
+#include "ProjetVR2A/ProjetVR2AGameInstance.h"
 
+class UProjetVR2AGameInstance;
 DEFINE_LOG_CATEGORY_STATIC(LogFPChar, Warning, All);
 
 //////////////////////////////////////////////////////////////////////////
@@ -127,6 +129,9 @@ void AProjetVR2ACharacter::SetupPlayerInputComponent(class UInputComponent* Play
 	// Bind Sprint Event
 	PlayerInputComponent->BindAction("Sprint", IE_Pressed, this, &AProjetVR2ACharacter::StartSprint);
 	PlayerInputComponent->BindAction("Sprint", IE_Released, this, &AProjetVR2ACharacter::StopSprint);
+
+	// Bind pause menu
+	PlayerInputComponent->BindAction("Pause", IE_Pressed, this, &AProjetVR2ACharacter::OnPause);
 
 	// Enable touchscreen input
 	EnableTouchscreenMovement(PlayerInputComponent);
@@ -315,4 +320,10 @@ void AProjetVR2ACharacter::StartSprint()
 void AProjetVR2ACharacter::StopSprint() 
 {
 	GetCharacterMovement()->MaxWalkSpeed /= SprintSpeedMultiplier;
+}
+
+void AProjetVR2ACharacter::OnPause()
+{
+	UGameplayStatics::SetGamePaused(GetWorld(), true);
+	Cast<UProjetVR2AGameInstance>(GetGameInstance())->LoadInGameMenu();
 }

@@ -133,6 +133,8 @@ protected:
 
 	void StartSprint();
 	void StopSprint();
+
+	void OnPause();
 	
 protected:
 	// APawn interface
