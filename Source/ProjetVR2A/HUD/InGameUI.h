@@ -18,10 +18,13 @@ public:
 	UPROPERTY(meta = (BindWidget)) class UButton* ResumeBtn = nullptr;
 
 
-	UPROPERTY(meta = (BindWidget)) class UTextBlock* PauseTitle = nullptr;
+	UPROPERTY(meta = (BindWidget)) class UButton* EndBtn = nullptr;
 
 	UFUNCTION()
 	void OnResumeBtnClick();
+
+	UFUNCTION()
+	void OnEndBtnClick();
 	
 	virtual void NativeConstruct() override;
 	

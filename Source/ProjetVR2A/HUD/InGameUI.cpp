@@ -25,6 +25,9 @@ void UInGameUI::NativeConstruct()
 	if(!ensure(ResumeBtn != nullptr)) return;
 	ResumeBtn->OnClicked.AddDynamic(this, &UInGameUI::OnResumeBtnClick);
 
+	if (!ensure(EndBtn != nullptr)) return;
+	EndBtn->OnClicked.AddDynamic(this, &UInGameUI::OnEndBtnClick);
+
 }
 
 
@@ -39,4 +42,10 @@ void UInGameUI::OnResumeBtnClick()
 	this->RemoveFromParent();
 	UGameplayStatics::SetGamePaused(GetWorld(), false);
 
+}
+
+void UInGameUI::OnEndBtnClick()
+{
+	APlayerController* PlayerController = GetWorld()->GetFirstPlayerController();
+	PlayerController->ConsoleCommand("quit");
 }
