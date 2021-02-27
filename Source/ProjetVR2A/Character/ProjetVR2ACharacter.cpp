@@ -12,7 +12,12 @@
 #include "Kismet/GameplayStatics.h"
 #include "MotionControllerComponent.h"
 #include "XRMotionControllerBase.h" // for FXRMotionControllerBase::RightHandSourceId
+#include "Components/ProgressBar.h"
+#include "Components/WidgetComponent.h"
 #include "ProjetVR2A/ProjetVR2AGameInstance.h"
+#include "ProjetVR2A/HUD/PlayerStats.h"
+#include "ProjetVR2A/HUD/ProjetVR2AHUD.h"
+
 
 class UProjetVR2AGameInstance;
 DEFINE_LOG_CATEGORY_STATIC(LogFPChar, Warning, All);
@@ -88,6 +93,11 @@ AProjetVR2ACharacter::AProjetVR2ACharacter()
 
 	// Define speed var
 	SprintSpeedMultiplier = 2.0f;
+
+	// Define Player Life point
+	Pv = MaxPv;
+
+
 }
 
 void AProjetVR2ACharacter::BeginPlay()
@@ -109,6 +119,10 @@ void AProjetVR2ACharacter::BeginPlay()
 		VR_Gun->SetHiddenInGame(true, true);
 		Mesh1P->SetHiddenInGame(false, true);
 	}
+
+	//Cast<UPlayerStats>(Cast<AProjetVR2AHUD>(GetWorld()->GetFirstPlayerController()->GetHUD())->GetPlayerStatsWidget())->
+	//	GetHealthBar()->PercentDelegate.BindUFunction(this, FName("GetHealthPercent"));
+
 }
 
 //////////////////////////////////////////////////////////////////////////
@@ -326,4 +340,9 @@ void AProjetVR2ACharacter::OnPause()
 {
 	UGameplayStatics::SetGamePaused(GetWorld(), true);
 	Cast<UProjetVR2AGameInstance>(GetGameInstance())->LoadInGameMenu();
+}
+
+float AProjetVR2ACharacter::GetHealthPercent() const
+{
+	return (Pv / MaxPv) * 100;
 }

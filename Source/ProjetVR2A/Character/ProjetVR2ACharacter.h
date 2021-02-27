@@ -90,7 +90,10 @@ public:
 	float SprintSpeedMultiplier;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Gameplay)
-	float PV = 20;
+	float MaxPv = 20;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Gameplay)
+	float Pv;
 
 protected:
 	
@@ -135,6 +138,9 @@ protected:
 	void StopSprint();
 
 	void OnPause();
+
+	UFUNCTION(BlueprintPure, Category="Health")
+	float GetHealthPercent() const;
 	
 protected:
 	// APawn interface

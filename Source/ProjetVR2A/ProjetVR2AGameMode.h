@@ -28,6 +28,8 @@ protected:
 
 	UPROPERTY()
 	UUserWidget* CurrentWidget;
+
+
 };
 
 
