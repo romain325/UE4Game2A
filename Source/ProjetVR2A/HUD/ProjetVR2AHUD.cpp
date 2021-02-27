@@ -56,6 +56,7 @@ void AProjetVR2AHUD::BeginPlay()
 	if (AProjetVR2ACharacter* Char = Cast<AProjetVR2ACharacter>(GetWorld()->GetFirstPlayerController()->GetCharacter()))
 	{
 		Cast<UPlayerStats>(PlayerStats)->GetHealthBar()->PercentDelegate.BindUFunction(Char, FName("GetHealthPercent"));
+		Cast<UPlayerStats>(PlayerStats)->GetEnergyBar()->PercentDelegate.BindUFunction(Char, FName("GetEnergyPercent"));
 	}
 	PlayerStats->AddToViewport();
 }

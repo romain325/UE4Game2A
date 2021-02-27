@@ -16,8 +16,13 @@ class PROJETVR2A_API UPlayerStats : public UUserWidget
 
 public:
 	FORCEINLINE class UProgressBar* GetHealthBar() { return HealthBar; }
+	
+	FORCEINLINE class UProgressBar* GetEnergyBar() { return EnergyBar; }
 
 private:
 	UPROPERTY(meta = (BindWidget))
 	class UProgressBar* HealthBar = nullptr;
+
+	UPROPERTY(meta = (BindWidget))
+	class UProgressBar* EnergyBar = nullptr;
 };

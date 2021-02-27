@@ -95,6 +95,15 @@ public:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Gameplay)
 	float Pv;
 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Gameplay)
+	float MaxEnergy = 10;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Gameplay)
+	float Energy;
+
+private:
+	long tickCount = 0;
+
 protected:
 	
 	/** Fires a projectile. */
@@ -141,6 +150,12 @@ protected:
 
 	UFUNCTION(BlueprintPure, Category="Health")
 	float GetHealthPercent() const;
+
+	UFUNCTION(BlueprintPure, Category = "Energy")
+	float GetEnergyPercent() const;
+
+	// Lp & Energy cooldown
+	virtual void Tick(float DeltaSeconds) override;
 	
 protected:
 	// APawn interface
