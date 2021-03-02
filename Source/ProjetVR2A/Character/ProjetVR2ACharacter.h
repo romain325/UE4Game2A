@@ -148,6 +148,13 @@ protected:
 
 	void OnPause();
 
+	UFUNCTION(BlueprintCallable)
+	FORCEINLINE float GetHealth() const { return Pv; };
+
+	UFUNCTION(BlueprintCallable)
+	FORCEINLINE float GetEnergy() const { return Energy; };
+
+
 	UFUNCTION(BlueprintPure, Category="Health")
 	float GetHealthPercent() const;
 

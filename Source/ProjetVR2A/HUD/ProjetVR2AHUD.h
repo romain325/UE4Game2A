@@ -20,6 +20,7 @@ public:
 	virtual void DrawHUD() override;
 	virtual void BeginPlay() override;
 
+	UFUNCTION(BlueprintCallable)
 	FORCEINLINE UUserWidget* GetPlayerStatsWidget() const { return PlayerStats; }
 
 private:

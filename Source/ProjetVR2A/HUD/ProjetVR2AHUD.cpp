@@ -52,7 +52,7 @@ void AProjetVR2AHUD::BeginPlay()
 	Super::BeginPlay();
 
 	PlayerStats = CreateWidget(GetWorld()->GetFirstPlayerController(), PlayerStatsClass);
-	// bind widget to lp
+	// bind widget to lp & energy
 	if (AProjetVR2ACharacter* Char = Cast<AProjetVR2ACharacter>(GetWorld()->GetFirstPlayerController()->GetCharacter()))
 	{
 		Cast<UPlayerStats>(PlayerStats)->GetHealthBar()->PercentDelegate.BindUFunction(Char, FName("GetHealthPercent"));

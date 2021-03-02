@@ -345,6 +345,7 @@ void AProjetVR2ACharacter::StopSprint()
 void AProjetVR2ACharacter::OnPause()
 {
 	UGameplayStatics::SetGamePaused(GetWorld(), true);
+	Cast<AProjetVR2AHUD>(GetWorld()->GetFirstPlayerController()->GetHUD())->GetPlayerStatsWidget()->RemoveFromParent();
 	Cast<UProjetVR2AGameInstance>(GetGameInstance())->LoadInGameMenu();
 }
 
