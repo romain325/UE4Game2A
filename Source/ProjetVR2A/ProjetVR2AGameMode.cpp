@@ -14,6 +14,7 @@ AProjetVR2AGameMode::AProjetVR2AGameMode()
 
 	// use our custom HUD class
 	HUDClass = AProjetVR2AHUD::StaticClass();
+
 }
 
 void AProjetVR2AGameMode::BeginPlay() {

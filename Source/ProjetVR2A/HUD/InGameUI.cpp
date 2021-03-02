@@ -3,10 +3,14 @@
 
 #include "InGameUI.h"
 
+
+#include "ProjetVR2AHUD.h"
 #include "Components/Button.h"
 #include "Components/TextBlock.h"
 #include "Kismet/GameplayStatics.h"
 
+
+class AProjetVR2AHUD;
 
 void UInGameUI::NativeConstruct()
 {
@@ -38,9 +42,11 @@ void UInGameUI::OnResumeBtnClick()
 
 	PlayerController->SetInputMode(InputMode);
 	PlayerController->SetShowMouseCursor(false);
+	Cast<AProjetVR2AHUD>(PlayerController->GetHUD())->GetPlayerStatsWidget()->AddToViewport();
 
 	this->RemoveFromParent();
 	UGameplayStatics::SetGamePaused(GetWorld(), false);
+	
 
 }
 

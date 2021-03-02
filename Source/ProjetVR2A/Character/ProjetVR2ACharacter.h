@@ -90,7 +90,19 @@ public:
 	float SprintSpeedMultiplier;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Gameplay)
-	float PV = 20;
+	float MaxPv = 20;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Gameplay)
+	float Pv;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Gameplay)
+	float MaxEnergy = 10;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Gameplay)
+	float Energy;
+
+private:
+	long tickCount = 0;
 
 protected:
 	
@@ -135,6 +147,22 @@ protected:
 	void StopSprint();
 
 	void OnPause();
+
+	UFUNCTION(BlueprintCallable)
+	FORCEINLINE float GetHealth() const { return Pv; };
+
+	UFUNCTION(BlueprintCallable)
+	FORCEINLINE float GetEnergy() const { return Energy; };
+
+
+	UFUNCTION(BlueprintPure, Category="Health")
+	float GetHealthPercent() const;
+
+	UFUNCTION(BlueprintPure, Category = "Energy")
+	float GetEnergyPercent() const;
+
+	// Lp & Energy cooldown
+	virtual void Tick(float DeltaSeconds) override;
 	
 protected:
 	// APawn interface

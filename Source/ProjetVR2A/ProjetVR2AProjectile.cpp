@@ -40,6 +40,15 @@ void AProjetVR2AProjectile::OnHit(UPrimitiveComponent* HitComp, AActor* OtherAct
 	{
 		OtherComp->AddImpulseAtLocation(GetVelocity() * 100.0f, GetActorLocation());
 	}
+
+	if(OtherActor->ActorHasTag("TakeDamage"))
+	{
+		// Damage class specs not use bc we don't actually need further information
+		FPointDamageEvent DamageEvent;
+		DamageEvent.Damage = 5;
+		
+		OtherActor->TakeDamage(DamageEvent.Damage, DamageEvent, GetWorld()->GetFirstPlayerController() ,this );
+	}
 	
     Destroy();
 }

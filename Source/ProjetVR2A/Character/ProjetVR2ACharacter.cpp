@@ -12,7 +12,12 @@
 #include "Kismet/GameplayStatics.h"
 #include "MotionControllerComponent.h"
 #include "XRMotionControllerBase.h" // for FXRMotionControllerBase::RightHandSourceId
+#include "Components/ProgressBar.h"
+#include "Components/WidgetComponent.h"
 #include "ProjetVR2A/ProjetVR2AGameInstance.h"
+#include "ProjetVR2A/HUD/PlayerStats.h"
+#include "ProjetVR2A/HUD/ProjetVR2AHUD.h"
+
 
 class UProjetVR2AGameInstance;
 DEFINE_LOG_CATEGORY_STATIC(LogFPChar, Warning, All);
@@ -88,6 +93,11 @@ AProjetVR2ACharacter::AProjetVR2ACharacter()
 
 	// Define speed var
 	SprintSpeedMultiplier = 2.0f;
+
+	// Define Player Life point & Energy
+	Pv = MaxPv;
+	Energy = MaxEnergy;
+
 }
 
 void AProjetVR2ACharacter::BeginPlay()
@@ -109,6 +119,10 @@ void AProjetVR2ACharacter::BeginPlay()
 		VR_Gun->SetHiddenInGame(true, true);
 		Mesh1P->SetHiddenInGame(false, true);
 	}
+
+	//Cast<UPlayerStats>(Cast<AProjetVR2AHUD>(GetWorld()->GetFirstPlayerController()->GetHUD())->GetPlayerStatsWidget())->
+	//	GetHealthBar()->PercentDelegate.BindUFunction(this, FName("GetHealthPercent"));
+
 }
 
 //////////////////////////////////////////////////////////////////////////
@@ -153,49 +167,55 @@ void AProjetVR2ACharacter::SetupPlayerInputComponent(class UInputComponent* Play
 
 void AProjetVR2ACharacter::OnFire()
 {
-	// try and fire a projectile
-	if (ProjectileClass != nullptr)
+	// Check if energy allow you to shoot
+	if (Energy > 0)
 	{
-		UWorld* const World = GetWorld();
-		if (World != nullptr)
+		// try and fire a projectile
+		if (ProjectileClass != nullptr)
 		{
-			if (bUsingMotionControllers)
+			UWorld* const World = GetWorld();
+			if (World != nullptr)
 			{
-				const FRotator SpawnRotation = VR_MuzzleLocation->GetComponentRotation();
-				const FVector SpawnLocation = VR_MuzzleLocation->GetComponentLocation();
-				World->SpawnActor<AProjetVR2AProjectile>(ProjectileClass, SpawnLocation, SpawnRotation);
-			}
-			else
-			{
-				const FRotator SpawnRotation = GetControlRotation();
-				// MuzzleOffset is in camera space, so transform it to world space before offsetting from the character location to find the final muzzle position
-				const FVector SpawnLocation = ((FP_MuzzleLocation != nullptr) ? FP_MuzzleLocation->GetComponentLocation() : GetActorLocation()) + SpawnRotation.RotateVector(GunOffset);
+				if (bUsingMotionControllers)
+				{
+					const FRotator SpawnRotation = VR_MuzzleLocation->GetComponentRotation();
+					const FVector SpawnLocation = VR_MuzzleLocation->GetComponentLocation();
+					World->SpawnActor<AProjetVR2AProjectile>(ProjectileClass, SpawnLocation, SpawnRotation);
+				}
+				else
+				{
+					const FRotator SpawnRotation = GetControlRotation();
+					// MuzzleOffset is in camera space, so transform it to world space before offsetting from the character location to find the final muzzle position
+					const FVector SpawnLocation = ((FP_MuzzleLocation != nullptr) ? FP_MuzzleLocation->GetComponentLocation() : GetActorLocation()) + SpawnRotation.RotateVector(GunOffset);
 
-				//Set Spawn Collision Handling Override
-				FActorSpawnParameters ActorSpawnParams;
-				ActorSpawnParams.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AdjustIfPossibleButDontSpawnIfColliding;
+					//Set Spawn Collision Handling Override
+					FActorSpawnParameters ActorSpawnParams;
+					ActorSpawnParams.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AdjustIfPossibleButDontSpawnIfColliding;
 
-				// spawn the projectile at the muzzle
-				World->SpawnActor<AProjetVR2AProjectile>(ProjectileClass, SpawnLocation, SpawnRotation, ActorSpawnParams);
+					// spawn the projectile at the muzzle
+					World->SpawnActor<AProjetVR2AProjectile>(ProjectileClass, SpawnLocation, SpawnRotation, ActorSpawnParams);
+				}
 			}
 		}
-	}
 
-	// try and play the sound if specified
-	if (FireSound != nullptr)
-	{
-		UGameplayStatics::PlaySoundAtLocation(this, FireSound, GetActorLocation());
-	}
-
-	// try and play a firing animation if specified
-	if (FireAnimation != nullptr)
-	{
-		// Get the animation object for the arms mesh
-		UAnimInstance* AnimInstance = Mesh1P->GetAnimInstance();
-		if (AnimInstance != nullptr)
+		// try and play the sound if specified
+		if (FireSound != nullptr)
 		{
-			AnimInstance->Montage_Play(FireAnimation, 1.f);
+			UGameplayStatics::PlaySoundAtLocation(this, FireSound, GetActorLocation());
 		}
+
+		// try and play a firing animation if specified
+		if (FireAnimation != nullptr)
+		{
+			// Get the animation object for the arms mesh
+			UAnimInstance* AnimInstance = Mesh1P->GetAnimInstance();
+			if (AnimInstance != nullptr)
+			{
+				AnimInstance->Montage_Play(FireAnimation, 1.f);
+			}
+		}
+
+		Energy -= 1;
 	}
 }
 
@@ -325,5 +345,29 @@ void AProjetVR2ACharacter::StopSprint()
 void AProjetVR2ACharacter::OnPause()
 {
 	UGameplayStatics::SetGamePaused(GetWorld(), true);
+	Cast<AProjetVR2AHUD>(GetWorld()->GetFirstPlayerController()->GetHUD())->GetPlayerStatsWidget()->RemoveFromParent();
 	Cast<UProjetVR2AGameInstance>(GetGameInstance())->LoadInGameMenu();
+}
+
+float AProjetVR2ACharacter::GetHealthPercent() const
+{
+	return Pv / MaxPv;
+}
+
+float AProjetVR2ACharacter::GetEnergyPercent() const
+{
+	return Energy / MaxEnergy;
+}
+
+void AProjetVR2ACharacter::Tick(float DeltaSeconds)
+{
+	if(tickCount % 5 == 0 && Energy < MaxEnergy) {
+		Energy += 0.1;
+	}
+	
+	if (tickCount % 10 == 0 && Pv < MaxPv) {
+		Pv += 0.1;
+	}
+
+	tickCount++;
 }
