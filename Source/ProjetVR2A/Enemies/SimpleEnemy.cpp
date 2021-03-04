@@ -22,6 +22,8 @@ float ASimpleEnemy::TakeDamage(float DamageAmount, FDamageEvent const& DamageEve
 	AActor* DamageCauser)
 {
 	Pv = Pv - DamageAmount;
+	GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Red, TEXT("YOU FUCKEKKER %d"));
+
 
 	if(Pv < 0)
 	{
