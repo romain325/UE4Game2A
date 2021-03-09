@@ -50,10 +50,8 @@ void ASimpleEnemy::OnHit(UPrimitiveComponent* HitComp, AActor* OtherActor, UPrim
 	// Only add impulse and destroy projectile if we hit a physics
 	if ((OtherActor == nullptr) || (OtherActor == this) || (OtherComp == nullptr)) return;
 
-	if (OtherActor->ActorHasTag("Player") && 1000 < FDateTime::Now().GetTicks() - LastAttack.GetTicks())
+	if (OtherActor->ActorHasTag("Player") && FDateTime::Now().GetTicks() - LastAttack.GetTicks() > 10e6)
 	{
-		GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Blue, TEXT("DIOOOOOOOOOOO"));
-
 		// Damage class specs not use bc we don't actually need further information
 		FPointDamageEvent DamageEvent;
 		DamageEvent.Damage = 5;

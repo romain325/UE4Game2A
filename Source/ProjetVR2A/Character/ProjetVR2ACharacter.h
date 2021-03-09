@@ -105,6 +105,8 @@ private:
 	long tickCount = 0;
 
 protected:
+	/** Take the hit damages */
+	virtual float TakeDamage(float DamageAmount, FDamageEvent const& DamageEvent, AController* EventInstigator, AActor* DamageCauser) override;
 	
 	/** Fires a projectile. */
 	void OnFire();

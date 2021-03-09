@@ -165,6 +165,19 @@ void AProjetVR2ACharacter::SetupPlayerInputComponent(class UInputComponent* Play
 	PlayerInputComponent->BindAxis("LookUpRate", this, &AProjetVR2ACharacter::LookUpAtRate);
 }
 
+float AProjetVR2ACharacter::TakeDamage(float DamageAmount, FDamageEvent const& DamageEvent,
+	AController* EventInstigator, AActor* DamageCauser)
+{
+	Pv -= DamageAmount;
+	if(Pv <= 0)
+	{
+		Pv = 0;
+		// TODO Die
+	}
+	
+	return Super::TakeDamage(DamageAmount, DamageEvent, EventInstigator, DamageCauser);
+}
+
 void AProjetVR2ACharacter::OnFire()
 {
 	// Check if energy allow you to shoot
