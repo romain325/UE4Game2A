@@ -4,6 +4,7 @@
 #include "SimpleEnemy.h"
 
 #include "Components/CapsuleComponent.h"
+#include "ProjetVR2A/Character/ProjetVR2ACharacter.h"
 
 // Sets default values
 ASimpleEnemy::ASimpleEnemy()
@@ -19,7 +20,7 @@ ASimpleEnemy::ASimpleEnemy()
 	// add OnHit on Capsule Collision
 	if(UCapsuleComponent* Capsule = GetCapsuleComponent())
 	{
-		Capsule->OnComponentHit.AddDynamic(this, &ASimpleEnemy::OnHit);		
+		Capsule->OnComponentHit.AddDynamic(this, &ASimpleEnemy::OnHit);
 	}
 }
 
@@ -37,7 +38,6 @@ float ASimpleEnemy::TakeDamage(float DamageAmount, FDamageEvent const& DamageEve
 
 	if(Pv < 0)
 	{
-		GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Red, TEXT("YOU FUCKEKKER"));
 		Destroy();
 	}
 	
@@ -47,8 +47,10 @@ float ASimpleEnemy::TakeDamage(float DamageAmount, FDamageEvent const& DamageEve
 void ASimpleEnemy::OnHit(UPrimitiveComponent* HitComp, AActor* OtherActor, UPrimitiveComponent* OtherComp,
 	FVector NormalImpulse, const FHitResult& Hit)
 {
+	GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Red, TEXT("YOU FUCKEKKER"));
+	
 	// Only add impulse and destroy projectile if we hit a physics
-	if ((OtherActor == nullptr) || (OtherActor == this) || (OtherComp == nullptr)) return;
+	if ((OtherActor == nullptr) || (OtherActor == this)) return;
 
 	if (OtherActor->ActorHasTag("Player") && FDateTime::Now().GetTicks() - LastAttack.GetTicks() > 10e6)
 	{
@@ -62,10 +64,27 @@ void ASimpleEnemy::OnHit(UPrimitiveComponent* HitComp, AActor* OtherActor, UPrim
 	
 }
 
+
 // Called every frame
 void ASimpleEnemy::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
+}
+
+void ASimpleEnemy::TryAttackPlayer()
+{
+	if(AProjetVR2ACharacter* Player = Cast<AProjetVR2ACharacter>(GetWorld()->GetFirstPlayerController()->GetCharacter()))
+	{
+		if (GEngine)
+			GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Yellow, FString::Printf(TEXT("SHEEEESHs %f"), Player->GetDistanceTo(this)));
+
+		if(Player->GetDistanceTo(this) < 150)
+		{
+			const FHitResult emptyHitResult;
+			this->OnHit(nullptr, Player, nullptr, Player->GetActorLocation(), emptyHitResult);
+		}
+	}
+
 }
 
 
