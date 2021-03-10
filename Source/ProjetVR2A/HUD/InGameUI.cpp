@@ -16,15 +16,7 @@ void UInGameUI::NativeConstruct()
 {
 	Super::NativeConstruct();
 
-	APlayerController* PlayerController = GetWorld()->GetFirstPlayerController();
-
-	FInputModeUIOnly InputMode;
-	InputMode.SetLockMouseToViewportBehavior(EMouseLockMode::DoNotLock);
-	InputMode.SetWidgetToFocus(this->TakeWidget());
-
-	PlayerController->SetInputMode(InputMode);
-	PlayerController->SetShowMouseCursor(true);
-	
+	DisableInput();
 
 	if(!ensure(ResumeBtn != nullptr)) return;
 	ResumeBtn->OnClicked.AddDynamic(this, &UInGameUI::OnResumeBtnClick);
@@ -34,8 +26,19 @@ void UInGameUI::NativeConstruct()
 
 }
 
+void UInGameUI::DisableInput()
+{
+	APlayerController* PlayerController = GetWorld()->GetFirstPlayerController();
 
-void UInGameUI::OnResumeBtnClick()
+	FInputModeUIOnly InputMode;
+	InputMode.SetLockMouseToViewportBehavior(EMouseLockMode::DoNotLock);
+	InputMode.SetWidgetToFocus(this->TakeWidget());
+
+	PlayerController->SetInputMode(InputMode);
+	PlayerController->SetShowMouseCursor(true);
+}
+
+void UInGameUI::ReactiveInput()
 {
 	FInputModeGameOnly InputMode;
 	APlayerController* PlayerController = GetWorld()->GetFirstPlayerController();
@@ -45,9 +48,13 @@ void UInGameUI::OnResumeBtnClick()
 	Cast<AProjetVR2AHUD>(PlayerController->GetHUD())->GetPlayerStatsWidget()->AddToViewport();
 
 	this->RemoveFromParent();
-	UGameplayStatics::SetGamePaused(GetWorld(), false);
-	
+}
 
+
+void UInGameUI::OnResumeBtnClick()
+{
+	ReactiveInput();
+	UGameplayStatics::SetGamePaused(GetWorld(), false);
 }
 
 void UInGameUI::OnEndBtnClick()

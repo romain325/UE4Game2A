@@ -27,5 +27,8 @@ public:
 	void OnEndBtnClick();
 	
 	virtual void NativeConstruct() override;
-	
+
+private:
+	void DisableInput();
+	void ReactiveInput();
 };

@@ -101,8 +101,12 @@ public:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Gameplay)
 	float Energy;
 
+	FORCEINLINE unsigned int GetScore() const { return Score; }
+
 private:
-	long tickCount = 0;
+	unsigned long tickCount = 0;
+
+	unsigned int Score = 0;
 
 protected:
 	/** Take the hit damages */
@@ -165,6 +169,9 @@ protected:
 
 	// Lp & Energy cooldown
 	virtual void Tick(float DeltaSeconds) override;
+
+	//Death
+	virtual void OnDeath();
 	
 protected:
 	// APawn interface
@@ -185,5 +192,7 @@ public:
 	/** Returns FirstPersonCameraComponent subobject **/
 	UCameraComponent* GetFirstPersonCameraComponent() const { return FirstPersonCameraComponent; }
 
+	virtual void OnKillEnemy(ACharacter* Character, int ScoreBonus, float EneryBonus);
+	
 };
 

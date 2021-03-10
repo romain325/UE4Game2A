@@ -172,7 +172,7 @@ float AProjetVR2ACharacter::TakeDamage(float DamageAmount, FDamageEvent const& D
 	if(Pv <= 0)
 	{
 		Pv = 0;
-		// TODO Die
+		OnDeath();
 	}
 	
 	return Super::TakeDamage(DamageAmount, DamageEvent, EventInstigator, DamageCauser);
@@ -345,6 +345,12 @@ bool AProjetVR2ACharacter::EnableTouchscreenMovement(class UInputComponent* Play
 	return false;
 }
 
+void AProjetVR2ACharacter::OnKillEnemy(ACharacter* Character, int ScoreBonus, float EneryBonus)
+{
+	this->Energy += EneryBonus;
+	this->Score += ScoreBonus;
+}
+
 void AProjetVR2ACharacter::StartSprint() 
 {
 	GetCharacterMovement()->MaxWalkSpeed *= SprintSpeedMultiplier;
@@ -383,4 +389,11 @@ void AProjetVR2ACharacter::Tick(float DeltaSeconds)
 	}
 
 	tickCount++;
+}
+
+void AProjetVR2ACharacter::OnDeath()
+{
+	UGameplayStatics::SetGamePaused(GetWorld(), true);
+	Cast<AProjetVR2AHUD>(GetWorld()->GetFirstPlayerController()->GetHUD())->GetPlayerStatsWidget()->RemoveFromParent();
+	Cast<UProjetVR2AGameInstance>(GetGameInstance())->LoadGameOverMenu();
 }

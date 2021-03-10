@@ -20,6 +20,12 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Gameplay)
 	float MaxPv = 20;
 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Gameplay)
+	int KillScore = 5;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Gameplay)
+	float EnergyBonus = 1.0;
+
 	//UPROPERTY()
 	//FGameplayTagContainer Tags;
 
@@ -34,6 +40,9 @@ protected:
 
 	UFUNCTION()
 	void OnHit(UPrimitiveComponent* HitComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, FVector NormalImpulse, const FHitResult& Hit);
+
+	UFUNCTION()
+		virtual void OnDeath();
 	
 public:
 	

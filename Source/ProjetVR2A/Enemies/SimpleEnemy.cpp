@@ -38,7 +38,7 @@ float ASimpleEnemy::TakeDamage(float DamageAmount, FDamageEvent const& DamageEve
 
 	if(Pv < 0)
 	{
-		Destroy();
+		OnDeath();
 	}
 	
 	return Super::TakeDamage(DamageAmount, DamageEvent, EventInstigator, DamageCauser);
@@ -60,6 +60,12 @@ void ASimpleEnemy::OnHit(UPrimitiveComponent* HitComp, AActor* OtherActor, UPrim
 		LastAttack = FDateTime::Now();
 	}
 	
+}
+
+void ASimpleEnemy::OnDeath()
+{
+	Cast<AProjetVR2ACharacter>(GetWorld()->GetFirstPlayerController()->GetCharacter())->OnKillEnemy(this, this->KillScore, this->EnergyBonus);
+	Destroy();
 }
 
 

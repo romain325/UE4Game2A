@@ -21,6 +21,11 @@ protected:
 
 	TSubclassOf<class UUserWidget> MenuClass;
 
+	UPROPERTY(BlueprintReadWrite, Category = "UI")
+	class UGameOverUI* GameOverUI;
+
+	TSubclassOf<class UUserWidget> GameOverClass;
+
 public:
 	UProjetVR2AGameInstance(const FObjectInitializer& ObjectInitializer);
 	
@@ -29,5 +34,9 @@ public:
 	// Interface functions
 	UFUNCTION(BlueprintCallable)
 	void LoadInGameMenu();
+
+	// Interface functions
+	UFUNCTION(BlueprintCallable)
+	void LoadGameOverMenu();
 
 };
