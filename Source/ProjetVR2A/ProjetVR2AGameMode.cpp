@@ -12,14 +12,44 @@ AProjetVR2AGameMode::AProjetVR2AGameMode()
 	static ConstructorHelpers::FClassFinder<APawn> PlayerPawnClassFinder(TEXT("/Game/FirstPersonCPP/Blueprints/FirstPersonCharacter"));
 	DefaultPawnClass = PlayerPawnClassFinder.Class;
 
+	// Define enemy type
+	static ConstructorHelpers::FClassFinder<APawn> SimpleEnemyClassFinder(TEXT("/Game/FirstPersonCPP/Blueprints/Enemies/SimpleEnemyChar"));
+	SimpleEnemyClass = SimpleEnemyClassFinder.Class;
+
 	// use our custom HUD class
 	HUDClass = AProjetVR2AHUD::StaticClass();
+
+	BeginningEnemyCount = 25;
 
 }
 
 void AProjetVR2AGameMode::BeginPlay() {
 	Super::BeginPlay();
 	ChangeMenuWidget(StartingWidgetClass);
+
+	InitEnemySpawnPlaces();
+	
+	FTimerHandle Handle;
+	GetWorldTimerManager().SetTimer(Handle, this, &AProjetVR2AGameMode::SpawnEnemy, 5.0f, true);
+
+	for (int i = 0; i < BeginningEnemyCount; i++)
+	{
+		SpawnEnemy();
+	}
+}
+
+void AProjetVR2AGameMode::SpawnEnemy()
+{
+	GetWorld()->SpawnActor(SimpleEnemyClass, &SimpleEnemySpawnLocations[CurrentEnemySpawnTick % SimpleEnemySpawnLocations.Num()]);
+	CurrentEnemySpawnTick++;
+}
+
+void AProjetVR2AGameMode::InitEnemySpawnPlaces()
+{
+	SimpleEnemySpawnLocations.Add(FTransform(FVector(-2555, -6520, 1270)));
+	SimpleEnemySpawnLocations.Add(FTransform(FVector(4520, 1920, 340)));
+	SimpleEnemySpawnLocations.Add(FTransform(FVector(4540, 12140, 1310)));
+	SimpleEnemySpawnLocations.Add(FTransform(FVector(-2850, -2030, 1300)));
 }
 
 void AProjetVR2AGameMode::ChangeMenuWidget(TSubclassOf<UUserWidget> NewWidgetClass) {

@@ -5,6 +5,8 @@
 #include "CoreMinimal.h"
 #include "GameFramework/GameModeBase.h"
 #include "Blueprint/UserWidget.h"
+#include "Enemies/SimpleEnemy.h"
+
 #include "ProjetVR2AGameMode.generated.h"
 
 
@@ -19,6 +21,12 @@ public:
 	UFUNCTION(BlueprintCallable, Category = "Shooter Game")
 	void ChangeMenuWidget(TSubclassOf<UUserWidget> NewWidgetClass);
 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Shooter Game")
+	TArray<FTransform> SimpleEnemySpawnLocations;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Shooter Game")
+	uint8 BeginningEnemyCount;
+
 
 protected:
 	virtual void BeginPlay() override;
@@ -29,6 +37,14 @@ protected:
 	UPROPERTY()
 	UUserWidget* CurrentWidget;
 
+	virtual void SpawnEnemy();
+
+	TSubclassOf<ASimpleEnemy> SimpleEnemyClass;
+
+	virtual void InitEnemySpawnPlaces();
+
+private:
+	uint16 CurrentEnemySpawnTick = 0;
 
 };
 

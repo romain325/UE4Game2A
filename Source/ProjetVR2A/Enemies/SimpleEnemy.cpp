@@ -47,8 +47,6 @@ float ASimpleEnemy::TakeDamage(float DamageAmount, FDamageEvent const& DamageEve
 void ASimpleEnemy::OnHit(UPrimitiveComponent* HitComp, AActor* OtherActor, UPrimitiveComponent* OtherComp,
 	FVector NormalImpulse, const FHitResult& Hit)
 {
-	GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Red, TEXT("YOU FUCKEKKER"));
-	
 	// Only add impulse and destroy projectile if we hit a physics
 	if ((OtherActor == nullptr) || (OtherActor == this)) return;
 
@@ -75,9 +73,6 @@ void ASimpleEnemy::TryAttackPlayer()
 {
 	if(AProjetVR2ACharacter* Player = Cast<AProjetVR2ACharacter>(GetWorld()->GetFirstPlayerController()->GetCharacter()))
 	{
-		if (GEngine)
-			GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Yellow, FString::Printf(TEXT("SHEEEESHs %f"), Player->GetDistanceTo(this)));
-
 		if(Player->GetDistanceTo(this) < 150)
 		{
 			const FHitResult emptyHitResult;
