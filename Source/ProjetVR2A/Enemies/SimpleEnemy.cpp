@@ -21,7 +21,17 @@ ASimpleEnemy::ASimpleEnemy()
 	if(UCapsuleComponent* Capsule = GetCapsuleComponent())
 	{
 		Capsule->OnComponentHit.AddDynamic(this, &ASimpleEnemy::OnHit);
+
+		DeathParticles = CreateDefaultSubobject<UParticleSystemComponent>(TEXT("DeathParticles"));
+		DeathParticles->AttachTo(Capsule);
+		DeathParticles->SetRelativeLocation(FVector(0.0f, 0.0f, 0.0f));
+
+		static ConstructorHelpers::FObjectFinder<UParticleSystem> ParticleAsset(TEXT("/Game/StarterContent/Particles/P_Explosion"));
+		DeathParticles->SetTemplate(ParticleAsset.Object);
+		
 	}
+
+
 }
 
 // Called when the game starts or when spawned
@@ -65,7 +75,15 @@ void ASimpleEnemy::OnHit(UPrimitiveComponent* HitComp, AActor* OtherActor, UPrim
 void ASimpleEnemy::OnDeath()
 {
 	Cast<AProjetVR2ACharacter>(GetWorld()->GetFirstPlayerController()->GetCharacter())->OnKillEnemy(this, this->KillScore, this->EnergyBonus);
-	Destroy();
+	DeathParticles->Activate();
+
+	FTimerHandle UnusedHandle;
+	GetWorldTimerManager().SetTimer(UnusedHandle, this, &ASimpleEnemy::DestroyEnemy, 0.5f, false);
+}
+
+void ASimpleEnemy::DestroyEnemy()
+{
+	this->Destroy();
 }
 
 

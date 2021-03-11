@@ -6,6 +6,8 @@
 
 #include "GameplayTagContainer.h"
 #include "GameFramework/Character.h"
+#include "Particles/ParticleSystemComponent.h"
+
 #include "SimpleEnemy.generated.h"
 
 UCLASS()
@@ -26,6 +28,9 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Gameplay)
 	float EnergyBonus = 1.0;
 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Gameplay)
+	UParticleSystemComponent* DeathParticles;
+
 	//UPROPERTY()
 	//FGameplayTagContainer Tags;
 
@@ -43,6 +48,8 @@ protected:
 
 	UFUNCTION()
 		virtual void OnDeath();
+
+	void DestroyEnemy();
 	
 public:
 	
