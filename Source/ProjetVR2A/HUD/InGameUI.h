@@ -4,6 +4,8 @@
 
 #include "CoreMinimal.h"
 #include "Blueprint/UserWidget.h"
+#include "Components/Slider.h"
+
 #include "InGameUI.generated.h"
 
 /**
@@ -16,15 +18,19 @@ class PROJETVR2A_API UInGameUI : public UUserWidget
 
 public:	
 	UPROPERTY(meta = (BindWidget)) class UButton* ResumeBtn = nullptr;
-
+    
+    UPROPERTY(meta = (BindWidget)) USlider* SoundVolume = nullptr;
 
 	UPROPERTY(meta = (BindWidget)) class UButton* EndBtn = nullptr;
 
 	UFUNCTION()
 	void OnResumeBtnClick();
 
-	UFUNCTION()
-	void OnEndBtnClick();
+    UFUNCTION()
+    void OnEndBtnClick();
+    
+    UFUNCTION()
+    void OnVolumeChanged(float value);
 	
 	virtual void NativeConstruct() override;
 

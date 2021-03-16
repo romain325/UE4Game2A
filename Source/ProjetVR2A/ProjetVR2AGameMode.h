@@ -6,6 +6,7 @@
 #include "GameFramework/GameModeBase.h"
 #include "Blueprint/UserWidget.h"
 #include "Enemies/SimpleEnemy.h"
+#include "Sound/SoundCue.h"
 
 #include "ProjetVR2AGameMode.generated.h"
 
@@ -27,6 +28,11 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Shooter Game")
 	uint8 BeginningEnemyCount;
 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Music")
+		UAudioComponent* AudioComp;
+	
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Music")
+		USoundCue* Sounds;
 
 protected:
 	virtual void BeginPlay() override;

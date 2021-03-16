@@ -1,6 +1,10 @@
 // Copyright Epic Games, Inc. All Rights Reserved.
 
 #include "ProjetVR2AGameMode.h"
+
+
+#include "Components/AudioComponent.h"
+#include "Kismet/GameplayStatics.h"
 #include "ProjetVR2A/HUD/ProjetVR2AHUD.h"
 #include "ProjetVR2A/Character/ProjetVR2ACharacter.h"
 #include "UObject/ConstructorHelpers.h"
@@ -16,6 +20,11 @@ AProjetVR2AGameMode::AProjetVR2AGameMode()
 	static ConstructorHelpers::FClassFinder<APawn> SimpleEnemyClassFinder(TEXT("/Game/FirstPersonCPP/Blueprints/Enemies/SimpleEnemyChar"));
 	SimpleEnemyClass = SimpleEnemyClassFinder.Class;
 
+	// Define music type
+	static ConstructorHelpers::FObjectFinder<USoundCue> SoundClassFinder(TEXT("/Game/music/CParabola"));
+	Sounds = SoundClassFinder.Object;
+
+	
 	// use our custom HUD class
 	HUDClass = AProjetVR2AHUD::StaticClass();
 
@@ -36,6 +45,9 @@ void AProjetVR2AGameMode::BeginPlay() {
 	{
 		SpawnEnemy();
 	}
+	
+	AudioComp = UGameplayStatics::SpawnSound2D(this, Sounds, 1);
+
 }
 
 void AProjetVR2AGameMode::SpawnEnemy()

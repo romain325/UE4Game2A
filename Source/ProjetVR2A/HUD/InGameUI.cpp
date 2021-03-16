@@ -23,8 +23,13 @@ void UInGameUI::NativeConstruct()
 
 	if (!ensure(EndBtn != nullptr)) return;
 	EndBtn->OnClicked.AddDynamic(this, &UInGameUI::OnEndBtnClick);
+    
+    if (!ensure(SoundVolume != nullptr)) return;
+    SoundVolume->OnValueChanged.AddDynamic(this, &UInGameUI::OnVolumeChanged);
 
 }
+
+
 
 void UInGameUI::DisableInput()
 {
@@ -61,4 +66,9 @@ void UInGameUI::OnEndBtnClick()
 {
 	APlayerController* PlayerController = GetWorld()->GetFirstPlayerController();
 	PlayerController->ConsoleCommand("quit");
+}
+
+void UInGameUI::OnVolumeChanged(float value)
+{
+    
 }

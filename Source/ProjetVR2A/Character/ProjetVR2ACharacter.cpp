@@ -122,6 +122,7 @@ void AProjetVR2ACharacter::BeginPlay()
 
 	//Cast<UPlayerStats>(Cast<AProjetVR2AHUD>(GetWorld()->GetFirstPlayerController()->GetHUD())->GetPlayerStatsWidget())->
 	//	GetHealthBar()->PercentDelegate.BindUFunction(this, FName("GetHealthPercent"));
+	this->Tags.Add(FName("Player"));
 
 }
 

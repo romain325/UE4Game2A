@@ -9,13 +9,8 @@
 // Sets default values
 ASimpleEnemy::ASimpleEnemy()
 {
- 	// Set this character to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
-	PrimaryActorTick.bCanEverTick = true;
 	Pv = MaxPv;
 	LastAttack = FDateTime::Now();
-
-	// Add tag allowing them to take damage
-	// Tags.AddTag(FGameplayTag::RequestGameplayTag(FName("TakeDamage")));
 
 	// add OnHit on Capsule Collision
 	if(UCapsuleComponent* Capsule = GetCapsuleComponent())
@@ -30,15 +25,14 @@ ASimpleEnemy::ASimpleEnemy()
 		DeathParticles->SetTemplate(ParticleAsset.Object);
 		
 	}
-
-
 }
 
 // Called when the game starts or when spawned
 void ASimpleEnemy::BeginPlay()
 {
 	Super::BeginPlay();
-	
+	this->Tags.Add(FName("TakeDamage"));
+
 }
 
 float ASimpleEnemy::TakeDamage(float DamageAmount, FDamageEvent const& DamageEvent, AController* EventInstigator,
