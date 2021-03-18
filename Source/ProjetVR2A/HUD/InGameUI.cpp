@@ -5,9 +5,12 @@
 
 
 #include "ProjetVR2AHUD.h"
+#include "Components/AudioComponent.h"
 #include "Components/Button.h"
 #include "Components/TextBlock.h"
 #include "Kismet/GameplayStatics.h"
+#include "ProjetVR2A/MyGameUserSettings.h"
+#include "ProjetVR2A/ProjetVR2AGameMode.h"
 
 
 class AProjetVR2AHUD;
@@ -27,6 +30,10 @@ void UInGameUI::NativeConstruct()
     if (!ensure(SoundVolume != nullptr)) return;
     SoundVolume->OnValueChanged.AddDynamic(this, &UInGameUI::OnVolumeChanged);
 
+	if(GEngine)
+	{
+		SoundVolume->SetValue(Cast<UMyGameUserSettings>(GEngine->GetGameUserSettings())->GetMasterVolume());
+	}
 }
 
 
@@ -70,5 +77,9 @@ void UInGameUI::OnEndBtnClick()
 
 void UInGameUI::OnVolumeChanged(float value)
 {
-    
+    if(GEngine)
+    {
+		Cast<UMyGameUserSettings>(GEngine->GetGameUserSettings())->SetMasterVolume(value);
+		Cast<AProjetVR2AGameMode>(GetWorld()->GetAuthGameMode())->AudioComp->SetVolumeMultiplier(value);
+    }
 }

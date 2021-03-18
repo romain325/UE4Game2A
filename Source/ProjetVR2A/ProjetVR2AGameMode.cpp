@@ -3,6 +3,8 @@
 #include "ProjetVR2AGameMode.h"
 
 
+
+#include "MyGameUserSettings.h"
 #include "Components/AudioComponent.h"
 #include "Kismet/GameplayStatics.h"
 #include "ProjetVR2A/HUD/ProjetVR2AHUD.h"
@@ -45,9 +47,13 @@ void AProjetVR2AGameMode::BeginPlay() {
 	{
 		SpawnEnemy();
 	}
-	
-	AudioComp = UGameplayStatics::SpawnSound2D(this, Sounds, 1);
 
+	float Volume = 1.0;
+	if(GEngine)
+	{
+		Volume = Cast<UMyGameUserSettings>(GEngine->GetGameUserSettings())->GetMasterVolume();
+	}
+	AudioComp = UGameplayStatics::SpawnSound2D(this, Sounds, Volume);
 }
 
 void AProjetVR2AGameMode::SpawnEnemy()
