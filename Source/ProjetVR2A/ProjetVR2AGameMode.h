@@ -5,6 +5,7 @@
 #include "CoreMinimal.h"
 #include "GameFramework/GameModeBase.h"
 #include "Blueprint/UserWidget.h"
+#include "Bonus/Bonus.h"
 #include "Enemies/SimpleEnemy.h"
 #include "Sound/SoundCue.h"
 
@@ -26,6 +27,9 @@ public:
 	TArray<FTransform> SimpleEnemySpawnLocations;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Shooter Game")
+	TArray<FTransform> BonusSpawnLocations;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Shooter Game")
 	uint8 BeginningEnemyCount;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Music")
@@ -44,10 +48,13 @@ protected:
 	UUserWidget* CurrentWidget;
 
 	virtual void SpawnEnemy();
+	virtual void SpawnBonus();
 
 	TSubclassOf<ASimpleEnemy> SimpleEnemyClass;
+	TArray<TSubclassOf<ABonus>> BonusClasses;
 
 	virtual void InitEnemySpawnPlaces();
+	virtual void InitSpawnSpawnPlaces();
 
 private:
 	uint16 CurrentEnemySpawnTick = 0;

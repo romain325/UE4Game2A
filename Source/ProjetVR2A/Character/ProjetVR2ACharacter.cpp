@@ -352,6 +352,35 @@ void AProjetVR2ACharacter::OnKillEnemy(ACharacter* Character, int ScoreBonus, fl
 	this->Score += ScoreBonus;
 }
 
+void AProjetVR2ACharacter::EnergyBonus(float bonus)
+{
+	if(Energy <= MaxEnergy)
+	{
+		if(Energy + bonus >= MaxEnergy)
+		{
+			Energy = MaxEnergy;
+		}else
+		{
+			Energy += bonus;
+		}
+	}
+}
+
+void AProjetVR2ACharacter::HealthBonus(float bonus)
+{
+	if (Pv <= MaxPv)
+	{
+		if (Pv + bonus >= MaxPv)
+		{
+			Pv = MaxPv;
+		}
+		else
+		{
+			Pv += bonus;
+		}
+	}
+}
+
 void AProjetVR2ACharacter::StartSprint() 
 {
 	GetCharacterMovement()->MaxWalkSpeed *= SprintSpeedMultiplier;

@@ -3,6 +3,9 @@
 #pragma once
 
 #include "CoreMinimal.h"
+
+#include <functional>
+
 #include "GameFramework/Character.h"
 #include "ProjetVR2ACharacter.generated.h"
 
@@ -53,6 +56,7 @@ class AProjetVR2ACharacter : public ACharacter
 
 public:
 	AProjetVR2ACharacter();
+	typedef void(AProjetVR2ACharacter::*FBonusFunction)(float);
 
 protected:
 	virtual void BeginPlay();
@@ -193,6 +197,9 @@ public:
 	UCameraComponent* GetFirstPersonCameraComponent() const { return FirstPersonCameraComponent; }
 
 	virtual void OnKillEnemy(ACharacter* Character, int ScoreBonus, float EneryBonus);
+
+	void EnergyBonus(float bonus);
+	void HealthBonus(float bonus);
 	
 };
 
