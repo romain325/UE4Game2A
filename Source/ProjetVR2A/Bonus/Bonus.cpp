@@ -16,6 +16,7 @@ ABonus::ABonus()
 
 void ABonus::BeginPlay()
 {
+	Super::BeginPlay();
 	this->SetupElements();
 	if (UCapsuleComponent* capsule = Cast<UCapsuleComponent>(GetRootComponent()))
 	{
@@ -28,8 +29,8 @@ void ABonus::SetupElements() {}
 
 void ABonus::OnActivated()
 {
-	this->Destroy(true);
 	ABonus::BonusCount--;
+	const bool dest = this->Destroy();
 }
 
 void ABonus::OnHit(UPrimitiveComponent* HitComp, AActor* OtherActor, UPrimitiveComponent* OtherComp,

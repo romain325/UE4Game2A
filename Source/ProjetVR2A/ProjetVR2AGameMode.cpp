@@ -35,6 +35,7 @@ AProjetVR2AGameMode::AProjetVR2AGameMode()
 
 	BeginningEnemyCount = 25;
 
+	ABonus::BonusCount = 0;
 }
 
 void AProjetVR2AGameMode::BeginPlay() {
@@ -71,7 +72,7 @@ void AProjetVR2AGameMode::SpawnEnemy()
 void AProjetVR2AGameMode::SpawnBonus()
 {
 	GEngine->AddOnScreenDebugMessage(-1, 5.0f, FColor::Yellow, FString::Printf(TEXT("COUNT: %d"), ABonus::BonusCount));
-	if(ABonus::BonusCount <= 3)
+	if(ABonus::BonusCount <= 3 && ABonus::BonusCount >= 0)
 	{
 		GetWorld()->SpawnActor(BonusClasses[std::rand() % BonusClasses.Num()], &BonusSpawnLocations[std::rand() % BonusSpawnLocations.Num()]);
 	}
