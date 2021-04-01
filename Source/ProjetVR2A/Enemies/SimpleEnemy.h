@@ -31,9 +31,6 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Gameplay)
 	UParticleSystemComponent* DeathParticles;
 
-	//UPROPERTY()
-	//FGameplayTagContainer Tags;
-
 private:
 	float Pv;
 	FDateTime LastAttack;

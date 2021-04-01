@@ -93,14 +93,12 @@ public:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category="Character Movement: Walking")
 	float SprintSpeedMultiplier;
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Gameplay)
-	float MaxPv = 20;
+	const static float MaxPv;
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Gameplay)
 	float Pv;
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Gameplay)
-	float MaxEnergy = 10;
+	const static float MaxEnergy;
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Gameplay)
 	float Energy;

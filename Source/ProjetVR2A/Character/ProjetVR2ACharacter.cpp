@@ -25,6 +25,9 @@ DEFINE_LOG_CATEGORY_STATIC(LogFPChar, Warning, All);
 //////////////////////////////////////////////////////////////////////////
 // AProjetVR2ACharacter
 
+const float AProjetVR2ACharacter::MaxEnergy = 12;
+const float AProjetVR2ACharacter::MaxPv = 20;
+
 AProjetVR2ACharacter::AProjetVR2ACharacter()
 {
 	// Set size for collision capsule
