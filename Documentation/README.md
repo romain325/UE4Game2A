@@ -14,12 +14,13 @@ Ce combattant aux idées révolutionnaires c'est vous, au combat!
 Camera mouvement: Souris
 Déplacement: ZQSD
 Tir: Souris Gauche
+Grenade: G
 Pause: Ctrl + P
 
 ## Gameplay
 
 Votre personnage est doté d'une bar d'energie et de vie.  
-La barre d'énergie se vide à chaque tir que vous effectuerai avec votre arme.  
+La barre d'énergie se vide à chaque tir que vous effectuerai avec votre arme (progressif) ou fortement lors de l'envoi d'une grenade.  
 Votre barre de vie diminuera en cas de contact avec vos adversaires.  
 Ces deux données remontent peu à peu au fur et à mesure du jeu.  
 Vous pouvez aussi récupérer des collecibles vous permettant de remonter ces données plus rapidement, ceux-ci spawn de manière aléatoire sur la Map.
