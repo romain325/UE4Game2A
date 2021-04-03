@@ -78,6 +78,10 @@ public:
 	UPROPERTY(EditDefaultsOnly, Category=Projectile)
 	TSubclassOf<class AProjetVR2AProjectile> ProjectileClass;
 
+	/** Projectile class to spawn */
+	UPROPERTY(EditDefaultsOnly, Category=Projectile)
+	TSubclassOf<class AGrenade> GrenadeClass;
+
 	/** Sound to play each time we fire */
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category=Gameplay)
 	USoundBase* FireSound;
@@ -116,6 +120,8 @@ protected:
 	
 	/** Fires a projectile. */
 	void OnFire();
+
+	void OnThrowGrenade();
 
 	/** Resets HMD orientation and position in VR. */
 	void OnResetVR();

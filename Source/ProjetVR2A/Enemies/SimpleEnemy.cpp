@@ -18,12 +18,12 @@ ASimpleEnemy::ASimpleEnemy()
 		Capsule->OnComponentHit.AddDynamic(this, &ASimpleEnemy::OnHit);
 
 		DeathParticles = CreateDefaultSubobject<UParticleSystemComponent>(TEXT("DeathParticles"));
+		DeathParticles->SetAutoActivate(false);
 		DeathParticles->AttachTo(Capsule);
 		DeathParticles->SetRelativeLocation(FVector(0.0f, 0.0f, 0.0f));
 
 		static ConstructorHelpers::FObjectFinder<UParticleSystem> ParticleAsset(TEXT("/Game/StarterContent/Particles/P_Explosion"));
 		DeathParticles->SetTemplate(ParticleAsset.Object);
-		
 	}
 }
 

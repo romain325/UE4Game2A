@@ -2,6 +2,7 @@
 
 #include "ProjetVR2ACharacter.h"
 #include "ProjetVR2A/ProjetVR2AProjectile.h"
+#include "ProjetVR2A/Character/Weapon/Grenade.h"
 #include "Animation/AnimInstance.h"
 #include "Camera/CameraComponent.h"
 #include "Components/CapsuleComponent.h"
@@ -67,7 +68,7 @@ AProjetVR2ACharacter::AProjetVR2ACharacter()
 	// Default offset from the character location for projectiles to spawn
 	GunOffset = FVector(100.0f, 0.0f, 10.0f);
 
-	// Note: The ProjectileClass and the skeletal mesh/anim blueprints for Mesh1P, FP_Gun, and VR_Gun 
+	// Note: The ProjectileClass/GrenadeClass and the skeletal mesh/anim blueprints for Mesh1P, FP_Gun, and VR_Gun 
 	// are set in the derived blueprint asset named MyCharacter to avoid direct content references in C++.
 
 	// Create VR Controllers.
@@ -143,6 +144,7 @@ void AProjetVR2ACharacter::SetupPlayerInputComponent(class UInputComponent* Play
 
 	// Bind fire event
 	PlayerInputComponent->BindAction("Fire", IE_Pressed, this, &AProjetVR2ACharacter::OnFire);
+	PlayerInputComponent->BindAction("Grenade", IE_Pressed, this, &AProjetVR2ACharacter::OnThrowGrenade);
 
 	// Bind Sprint Event
 	PlayerInputComponent->BindAction("Sprint", IE_Pressed, this, &AProjetVR2ACharacter::StartSprint);
@@ -233,6 +235,42 @@ void AProjetVR2ACharacter::OnFire()
 		}
 
 		Energy -= 1;
+	}
+}
+
+void AProjetVR2ACharacter::OnThrowGrenade()
+{
+	// Check if energy allow you to shoot
+	if (Energy > 10)
+	{
+		// try and fire a projectile
+		if (GrenadeClass != nullptr)
+		{
+			
+			if (UWorld* const World = GetWorld())
+			{
+				if (bUsingMotionControllers)
+				{
+					const FRotator SpawnRotation = VR_MuzzleLocation->GetComponentRotation();
+					const FVector SpawnLocation = VR_MuzzleLocation->GetComponentLocation();
+					World->SpawnActor<AGrenade>(GrenadeClass, SpawnLocation, SpawnRotation);
+				}
+				else
+				{
+					const FRotator SpawnRotation = GetControlRotation();
+					// MuzzleOffset is in camera space, so transform it to world space before offsetting from the character location to find the final muzzle position
+					const FVector SpawnLocation = ((FP_MuzzleLocation != nullptr) ? FP_MuzzleLocation->GetComponentLocation() : GetActorLocation()) + SpawnRotation.RotateVector(GunOffset);
+
+					//Set Spawn Collision Handling Override
+					FActorSpawnParameters ActorSpawnParams;
+					ActorSpawnParams.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AdjustIfPossibleButDontSpawnIfColliding;
+
+					// spawn the projectile at the muzzle
+					World->SpawnActor<AGrenade>(GrenadeClass, SpawnLocation, SpawnRotation, ActorSpawnParams);
+				}
+			}
+		}
+		Energy -= 10;
 	}
 }
 
